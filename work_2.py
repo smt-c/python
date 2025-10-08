@@ -27,20 +27,50 @@ guess = (high + low) / 2.0
 
 
 # cubic root
-cube = lambda y: y ** 3
-cubic = cube(guess)
-print(cubic)
+# cube = lambda y: y ** 3
+# cubic = cube(guess)
+# print(cubic)
 
-while abs(cubic - x) > epsilon:
+# while abs(cubic - x) > epsilon:
 
-    if cubic > x:
-        high = guess
-    else:
-        low = guess
+#     if cubic > x:
+#         high = guess
+#     else:
+#         low = guess
 
-    guess = (high+low) / 2.0
-    cubic = cube(guess)
-    num_guesses += 1
+#     guess = (high+low) / 2.0
+#     cubic = cube(guess)
+#     num_guesses += 1
 
-print('num guess:', num_guesses)
-print('cloose cb root of x:', guess)
+# print('num guess:', num_guesses)
+# print('cloose cb root of x:', guess)
+
+# Newthon - rapson method
+
+
+
+from sympy import symbols, diff
+
+# take inputs
+x_val, epsilon = map(float, input("Enter x and epsilon separated by space: ").split())
+
+def new_rap(x, epsilon):
+    y = symbols('y')
+    f = y**3 - x  # define equation dynamically
+    f_prime = diff(f, y)  # derivative wrt y
+
+    guess = x / 2.0
+
+    while True:
+        fx = f.subs({y: guess})
+        fpx = f_prime.subs({y: guess})
+        new_guess = guess - fx / fpx
+
+        if abs(new_guess - guess) < epsilon:
+            break
+
+        guess = new_guess
+
+    return new_guess
+
+print(f"Approximate square root of {x_val} is {new_rap(x_val, epsilon)}")
